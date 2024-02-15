@@ -2,7 +2,37 @@ maps = [' ', '1', '2', '3',
         '1', '-', '-', '-',
         '2', '-', '-', '-',
         '3', '-', '-', '-',
-]
+        ]
+
+
+def check(x, y):
+    if x == 1 and y == 1:
+        if maps[5] == '-':
+            return True
+    elif x == 2 and y == 1:
+        if maps[6] == '-':
+            return True
+    elif x == 3 and y == 1:
+        if maps[7] == '-':
+            return True
+    elif x == 1 and y == 2:
+        if maps[9] == '-':
+            return True
+    elif x == 2 and y == 2:
+        if maps[10] == '-':
+            return True
+    elif x == 3 and y == 2:
+        if maps[11] == '-':
+            return True
+    elif x == 1 and y == 3:
+        if maps[13] == '-':
+            return True
+    elif x == 2 and y == 3:
+        if maps[14] == '-':
+            return True
+    elif x == 3 and y == 3:
+        if maps[15] == '-':
+            return True
 
 
 def step(x, y, symbol):
@@ -27,25 +57,25 @@ def step(x, y, symbol):
 
 
 def print_map():
-    print(maps[0], end = " ")
-    print(maps[1], end = " ")
-    print(maps[2], end = " ")
+    print(maps[0], end=" ")
+    print(maps[1], end=" ")
+    print(maps[2], end=" ")
     print(maps[3])
- 
-    print(maps[4], end = " ")
-    print(maps[5], end = " ")
-    print(maps[6], end = " ")
-    print(maps[7])
- 
-    print(maps[8], end = " ")
-    print(maps[9], end = " ")
-    print(maps[10], end = " ")
-    print(maps[11]) 
 
-    print(maps[12], end = " ")
-    print(maps[13], end = " ")
-    print(maps[14], end = " ")
-    print(maps[15]) 
+    print(maps[4], end=" ")
+    print(maps[5], end=" ")
+    print(maps[6], end=" ")
+    print(maps[7])
+
+    print(maps[8], end=" ")
+    print(maps[9], end=" ")
+    print(maps[10], end=" ")
+    print(maps[11])
+
+    print(maps[12], end=" ")
+    print(maps[13], end=" ")
+    print(maps[14], end=" ")
+    print(maps[15])
 
 
 def check_x():
@@ -98,20 +128,31 @@ game = True
 count = 0
 while game == True:
     print_map()
-    player_x = input('Игрок "x", ваш ход:' )
-    step(int(player_x[0]), int(player_x[2]), 'x')
+    while True:
+        player_x = input('Игрок "x", ваш ход:')
+        if check(int(player_x[0]), int(player_x[2])) == True:
+            step(int(player_x[0]), int(player_x[2]), 'x')
+            break
+        else:
+            print('Эта клетка занята, выберите другую!')
     if check_x() != 0:
         break
     count += 1
-    print(count)
+    if count == 9:
+        print('Ничья!')
+        break
     print_map()
-    player_o = input('Игрок "o", ваш ход:' )
-    step(int(player_o[0]), int(player_o[2]), 'o')
+    while True:
+        player_o = input('Игрок "o", ваш ход:')
+        if check(int(player_o[0]), int(player_o[2])) == True:
+            step(int(player_o[0]), int(player_o[2]), 'o')
+            break
+        else:
+            print('Эта клетка занята, выберите другую!')
     if check_o() != 0:
         break
     count += 1
-    print(count)
-    if count == 10:
-        print('Ничья')
+    if count == 9:
+        print('Ничья!')
         break
 print_map()
