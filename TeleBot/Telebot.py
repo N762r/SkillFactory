@@ -1,5 +1,5 @@
 import telebot
-from Token import keys, header, TOKEN
+from Token import keys, header, TOKEN, print_keys
 from extentions import *
 
 bot = telebot.TeleBot(TOKEN)
@@ -7,8 +7,8 @@ bot = telebot.TeleBot(TOKEN)
 
 @bot.message_handler(commands=['start', 'help'])
 def help_me(message: telebot. types . Message):
-    text = 'Чтобы начать работу введите команду боту в следующем формате: \n<В какую валюту> \
-<ИЗ какой валюты> \
+    text = 'Чтобы начать работу введите команду боту в следующем формате: \n<в какую валюту> \
+<из какой валюты> \
 <количество переводимой валюты> \nНапример: "рубль авс.доллар 1000" выведет "Курс: 41082.841 RUB за 1000 AUD"\nУвидеть список всех доступных валют: /values'
     bot.reply_to(message, text)
 
@@ -16,7 +16,7 @@ def help_me(message: telebot. types . Message):
 @bot.message_handler(commands=['values'])
 def values(message: telebot. types .Message):
     text = "Доступные валюты:"
-    for key in keys.keys():
+    for key in print_keys.keys():
         text = '\n'.join((text, key, ))
     bot.reply_to(message, text)
 
