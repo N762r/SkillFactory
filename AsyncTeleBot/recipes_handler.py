@@ -33,11 +33,10 @@ async def cmd_search(message: Message, command: CommandObject, state: FSMContext
         []
     ]
     for category in categories:
-
-
+        kb_ct.append(types.KeyboardButton(text=f'{category}'))
     keyboard = types.ReplyKeyboardMarkup(
-
+        keyboard=kb_ct,
+        resize_keyboard=True,
     )
-
 
     await message.reply("Выберите категорию рецепта:", reply_markup=keyboard)
