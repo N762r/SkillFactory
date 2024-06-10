@@ -1,197 +1,174 @@
-import asyncio
-from aiogram.filters import Command, CommandObject, StateFilter
 from aiogram import F, types
 from aiogram.fsm.state import StatesGroup, State
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
 from aiogram.fsm.context import FSMContext
 from aiogram import Router, types
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 router = Router()
 
-class QuizQuestions(StatesGroup):
-    qq1 = State()
-    qq2 = State()
-    qq3 = State()
-    qq4 = State()
-    finish = State()
+class QuiZz(StatesGroup):
+    question1 = State()
+    question2 = State()
+    question3 = State()
+    question4 = State()
+    question5 = State()
+    finita_la_comedia = State()
 
 
-@router.callback_query(F.data == "start_quiz")
-async def starting(callback: types.CallbackQuery):#, state: FSMContext):
-    await callback.message.answer('Начинаем!')
-
-    # await state.set_state(QuizQuestions.fgtd.state)
-
+@router.callback_query(F.data == 'start_quiz')
+async def starting(callback: types.CallbackQuery, state: FSMContext):
     builder = InlineKeyboardBuilder()
     builder.add(
         types.InlineKeyboardButton(
-            text='Далее',
-            callback_data='r1'
+            text='Начинаем!',
+            callback_data='run'
         )
     )
     await callback.message.answer('Викторина состоит из нескольких вопросов, на каждый из них несколько вариантов ответов\nТолько отвечай честно!\nВ конце викторины мы подведём итоги и определим твоё тотемное животное, а таккже ты сможешь больше узнать о программе защиты животных!', reply_markup=builder.as_markup())
 
+    await state.set_state(QuiZz.question1)
     
-@router.message(F.data == 'r1')
-async def qu1(message: Message):#, state: FSMContext):
+
+    
+@router.callback_query(QuiZz.question1, F.data == 'run')
+async def qu1(callback: types.CallbackQuery, state: FSMContext):
     builder = InlineKeyboardBuilder()
-    builder.add(
+    builder.row(
         types.InlineKeyboardButton(
-            text="A",
-            callback_data="A"),
+            text='A',
+            callback_data='A'),
         types.InlineKeyboardButton(
             text='B',
-            callback_data="B"),
+            callback_data='B'),
         types.InlineKeyboardButton(
             text='C',
-            callback_data="C"),
+            callback_data='C'),
         types.InlineKeyboardButton(
             text='D',
-            callback_data="D"),
+            callback_data='D'),
+        )
+  
+    await callback.message.answer('Вопрос 1', reply_markup=builder.as_markup())
+
+    await state.set_state(QuiZz.question2)
+
+
+
+@router.callback_query(QuiZz.question2)
+async def qu2(callback: types.CallbackQuery, state: FSMContext):
+    a1 = callback.data
+    await state.update_data(a1 = a1)
+
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        types.InlineKeyboardButton(
+            text='A',
+            callback_data='A'),
+        types.InlineKeyboardButton(
+            text='B',
+            callback_data='B'),
+        types.InlineKeyboardButton(
+            text='C',
+            callback_data='C'),
+        types.InlineKeyboardButton(
+            text='D',
+            callback_data='D'),
         )
     
-    await message.answer('Вопрос 1', reply_markup=builder.as_markup())
+    await callback.message.answer('Вопрос 2', reply_markup=builder.as_markup())
 
-    # await state.set_state(Quizz.qq2.state)
-
-@router.callback_query(F.data == "A")
-async def a1(callback: types.CallbackQuery, state: FSMContext):
-    await state.update_data(a1='A')
-
-@router.callback_query(F.data == "B")
-async def a1(callback: types.CallbackQuery, state: FSMContext):
-    await state.update_data(a1='B')
-
-@router.callback_query(F.data == "C")
-async def a1(callback: types.CallbackQuery, state: FSMContext):
-    await state.update_data(a1='C')
-
-@router.callback_query(F.data == "D")
-async def a1(callback: types.CallbackQuery, state: FSMContext):
-    await state.update_data(a1='D')
+    await state.set_state(QuiZz.question3)
 
 
-# @router.message(Quizz.qq2)
-# async def qu2(message: Message, state: FSMContext):
-#     builder = InlineKeyboardBuilder()
-#     builder.add(
-#         types.InlineKeyboardButton(
-#             text="A",
-#             callback_data="A"),
-#         types.InlineKeyboardButton(
-#             text='B',
-#             callback_data="B"),
-#         types.InlineKeyboardButton(
-#             text='C',
-#             callback_data="C"),
-#         types.InlineKeyboardButton(
-#             text='D',
-#             callback_data="D"),
-#         )
+
+@router.callback_query(QuiZz.question3)
+async def qu3(callback: types.CallbackQuery, state: FSMContext):
+    a2 = callback.data
+    await state.update_data(a2 = a2)
+
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        types.InlineKeyboardButton(
+            text='A',
+            callback_data='A'),
+        types.InlineKeyboardButton(
+            text='B',
+            callback_data='B'),
+        types.InlineKeyboardButton(
+            text='C',
+            callback_data='C'),
+        types.InlineKeyboardButton(
+            text='D',
+            callback_data='D'),
+        )
     
-#     await message.answer('Вопрос 2', reply_markup=builder.as_markup())
+    await callback.message.answer('Вопрос 3', reply_markup=builder.as_markup())
 
-#     await state.set_state(Quizz.qq3.state)
-
-# @router.callback_query(F.data == "A")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a2='A')
-
-# @router.callback_query(F.data == "B")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a2='B')
-
-# @router.callback_query(F.data == "C")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a2='C')
-
-# @router.callback_query(F.data == "D")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a2='D')
+    await state.set_state(QuiZz.question4)
 
 
-# @router.message(Quizz.qq3)
-# async def qu3(message: Message, state: FSMContext):
-#     builder = InlineKeyboardBuilder()
-#     builder.add(
-#         types.InlineKeyboardButton(
-#             text="A",
-#             callback_data="A"),
-#         types.InlineKeyboardButton(
-#             text='B',
-#             callback_data="B"),
-#         types.InlineKeyboardButton(
-#             text='C',
-#             callback_data="C"),
-#         types.InlineKeyboardButton(
-#             text='D',
-#             callback_data="D"),
-#         )
+@router.callback_query(QuiZz.question4)
+async def qu4(callback: types.CallbackQuery, state: FSMContext):
+    a3 = callback.data
+    await state.update_data(a3 = a3)
+
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        types.InlineKeyboardButton(
+            text='A',
+            callback_data='A'),
+        types.InlineKeyboardButton(
+            text='B',
+            callback_data='B'),
+        types.InlineKeyboardButton(
+            text='C',
+            callback_data='C'),
+        types.InlineKeyboardButton(
+            text='D',
+            callback_data='D'),
+        )
     
-#     await message.answer('Вопрос 3', reply_markup=builder.as_markup())
+    await callback.message.answer('Вопрос 4', reply_markup=builder.as_markup())
 
-#     await state.set_state(Quizz.qq4.state)
+    await state.set_state(QuiZz.question5)
 
-# @router.callback_query(F.data == "A")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a3='A')
 
-# @router.callback_query(F.data == "B")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a3='B')
 
-# @router.callback_query(F.data == "C")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a3='C')
+@router.callback_query(QuiZz.question5)
+async def qu5(callback: types.CallbackQuery, state: FSMContext):
+    a4 = callback.data
+    await state.update_data(a4 = a4)
 
-# @router.callback_query(F.data == "D")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a3='D')
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        types.InlineKeyboardButton(
+            text='A',
+            callback_data='A'),
+        types.InlineKeyboardButton(
+            text='B',
+            callback_data='B'),
+        types.InlineKeyboardButton(
+            text='C',
+            callback_data='C'),
+        types.InlineKeyboardButton(
+            text='D',
+            callback_data='D'),
+        )
     
+    await callback.message.answer('Вопрос 5', reply_markup=builder.as_markup())
 
-# @router.message(Quizz.qq4)
-# async def qu4(message: Message, state: FSMContext):
-#     builder = InlineKeyboardBuilder()
-#     builder.add(
-#         types.InlineKeyboardButton(
-#             text="A",
-#             callback_data="A"),
-#         types.InlineKeyboardButton(
-#             text='B',
-#             callback_data="B"),
-#         types.InlineKeyboardButton(
-#             text='C',
-#             callback_data="C"),
-#         types.InlineKeyboardButton(
-#             text='D',
-#             callback_data="D"),
-#         )
-#     await message.answer('Вопрос 4', reply_markup=builder.as_markup())
+    await state.set_state(QuiZz.finita_la_comedia)
 
-#     await state.set_state(Quizz.finish.state)
 
-# @router.callback_query(F.data == "A")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a4='A')
 
-# @router.callback_query(F.data == "B")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a4='B')
+@router.callback_query(QuiZz.finita_la_comedia)
+async def finit(callback: types.CallbackQuery, state: FSMContext):
+    a5 = callback.data
+    await state.update_data(a5 = a5)
 
-# @router.callback_query(F.data == "C")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a4='C')
+    data = await state.get_data()
+    answers = [data.get('a1'), data.get('a2'), data.get('a3'), data.get('a4'), data.get('a5'), ]
+    result = max(set(answers), key=answers.count)
+    await callback.message.answer(f"{result}")
 
-# @router.callback_query(F.data == "D")
-# async def a1(callback: types.CallbackQuery, state: FSMContext):
-#     await state.update_data(a4='D')
-
-# @router.message(Quizz.finish)
-# async def result(message: Message, state: FSMContext):
-#     data = await state.get_data()
-#     ans = []
-#     for i in range(1, 5):
-#         ans.append(data[f"a{i}"])
-#     await message.answer(f'Вот твои варианты ответа:{ans}. Остальное будет потом')
+    await state.clear
